@@ -17,7 +17,7 @@ x = [6,2]
 h = [1,2,5,4]
 
 y = np.convolve(x,h,"full")  #now, because of the zero padding, the final dimension of the array is bigger
-print(y)  
+print(y)                     ## np.convolve arg = 1d array
 
 y = np.convolve(x,h,"same") #it is same as zero padding, but withgenerates same
                             ## zero padding only on left side
@@ -34,7 +34,7 @@ I= [[255,   7,  3],
 g= [[-1,1]]                 ## matrix cast
 
 print ('Without zero padding \n')
-print ('{0} \n'.format(sg.convolve( I, g, 'valid')))
+print ('{0} \n'.format(sg.convolve( I, g, 'valid')))    ## any dimension
 # The 'valid' argument states that the output consists only of those elements 
 # that do not rely on the zero-padding.
 
@@ -68,8 +68,8 @@ print (sg.convolve( I, g, 'valid'))
 
 # Building graph
 
-input = tf.Variable(tf.random_normal([1,10,10,1]))      ## [batch size, width, height, number of channels]
-filter = tf.Variable(tf.random_normal([3,3,1,1]))       ## [width, height, channels, number of filters]
+input = tf.Variable(tf.random_normal([1,10,10,1]))      ## [batch size, width, height, number of channels] format to be passed in tf.nn.conv2d
+filter = tf.Variable(tf.random_normal([3,3,1,1]))       ## [width, height, channels, number of filters] format to be passed in tf.nn.conv2d 
 op = tf.nn.conv2d(input, filter, strides=[1,1,1,1], padding='VALID')
 op2 = tf.nn.conv2d(input, filter, strides=[1,1,1,1], padding='SAME')
 
@@ -100,7 +100,7 @@ image_gr = im.convert("L")
 print("\n Original type: %r \n\n"%image_gr)
 
 # convert image to a matrix with values from 0 to 255 (uint8)
-arr = np.asarray(image_gr)
+arr = np.asarray(image_gr)          ## convert input to array
 print("After conversion to numerical representation : \n\n%r"%arr)
 #### Activating matplotlib for Ipython
 #%matplotlib inline
