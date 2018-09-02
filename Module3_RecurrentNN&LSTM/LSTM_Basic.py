@@ -17,5 +17,31 @@ print (sess.run(sample_input))  ## input of LSTM cell ( basically compose of
 with tf.variable_scope("LSTM_sample1"):
     output, state_new = lstm_cell(sample_input, state)
 sess.run(tf.global_variables_initializer())
-print (sess.run(state_new))
+print (sess.run(state_new)) 
 print (sess.run(output))
+print("\n\n\n\n\n")
+
+#########################################
+##  Stacked LSTM
+sess = tf.Session()
+LSTM_CELL_SIZE = 4
+input_dim = 6
+num_layers = 2
+
+cells = []
+for _ in range(num_layers):
+    cell = tf.contrib.rnn.LSTMCell(LSTM_CELL_SIZE)
+    cells.append(cell)
+stacked_lstm = tf.contrib.rnn.MultiRNNCell(cells)
+
+data = tf.placeholder(tf.float32,[None, None, input_dim])
+output, state = tf.nn.dynamic_rnn(cell, data, dtype=tf.float32)
+
+#Batch size x time steps x features. 2x3x6
+sample_input = [[[1,2,3,4,3,2],[1,2,1,1,1,2],[1,2,2,2,2,2]],[[1,2,3,4,3,2],[3,2,2,1,1,2],[0,0,0,0,3,2]]]
+#sample_input
+
+sess.run(tf.global_variables_initializer())
+print(sess.run(output, feed_dict={data: sample_input})) # Batch x time steps x CellSize
+print(sess.run(state, feed_dict={data: sample_input})) # c = Batch x CellSize = h
+sess.close()
